@@ -2,11 +2,175 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<title>Game</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#game{
+				padding-top: 0.2rem;
+			}
+			#game div{
+				box-sizing: border-box;
+				margin: 0 auto;
+				text-align: center;
+			}
+			#game .rectangle{
+				width: 1.4rem;
+				height: 1.94rem;
+				background: #c4e0fd;
+				border-radius: 5px;
+				border: 3px solid #4b3f37;
+			}
+			#game .box{
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+			}
+			#game .box .mar{
+				margin-left: 1.68rem;
+			}
+			#game .conduit{
+				position: relative;
+				background: #909db2;
+				border: 3px solid #414256;
+			}
+			#game .conduit .key-row{
+				position: absolute;
+				left: 84%;
+				top: 0.1rem;
+				transform: translate(-50%, -50%);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				width: .57rem;
+				height: 1.3rem;
+				background: red;
+				z-index: 99;
+			}
+			#game .conduit .key-row div{
+				width: .1rem;
+				height: 1.3rem;
+				background: #c6c1c6;
+			}
+			#game .conduit .key-column{
+				position: absolute;
+				top: 0;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				width: 1.3rem;
+				height: .57rem;
+				background: red;
+				z-index: 99;
+			}
+			#game .conduit .key-column div{
+				width: 1.3rem;
+				height: .1rem;
+				background: #c6c1c6;
+			}
+			#game .column{
+				width: 0.3rem;
+				height: 0.82rem;
+			}
+			#game .row{
+				width: 3rem;
+				height: 0.3rem;
+			}
+			#game #separate{
+				width: 3rem;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+			}
+		</style>
 	</head>
 	<body>
-		<div>
-			设计
+		<div id="game">
+			<div>
+				<div class="rectangle"></div>
+			</div>
+			<div>
+				<div class="conduit column">
+					<div class="key-column">
+						<div></div>
+					</div>
+				</div>
+				<div class="conduit row">
+					<div class="key-row" id="key2">
+						<div></div>
+					</div>
+				</div>
+				<div id="separate">
+					<span class="conduit column"></span>
+					<span class="conduit column"></span>
+				</div>
+			</div>
+			<div class="box">
+				<span class="rectangle"></span>
+				<span class="rectangle mar"></span>
+			</div>
 		</div>
 	</body>
+	<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	<script>
+		!(function(win, doc) {
+		    function setFontSize() {
+		        var winWidth = window.innerWidth;
+		        doc.documentElement.style.fontSize = (winWidth / 1080) * 100 + 'px';
+		    }
+		    var evt = 'onorientationchange' in win ? 'orientationchange' : 'resize';
+		    var timer = null;
+		    win.addEventListener(evt, function() {
+		        clearTimeout(timer);
+		        timer = setTimeout(setFontSize, 300);
+		    }, false);
+		    win.addEventListener("pageshow", function(e) {
+		        if (e.persisted) {
+		            clearTimeout(timer);
+		            timer = setTimeout(setFontSize, 300);
+		        }
+		    }, false);
+		    //初始化 
+		    setFontSize();
+		}(window, document));
+		var startX = "";
+		var startY = "";
+		var X = "";
+		var Y = "";
+		var speed = -50.0;
+		$("#key2").on("touchstart", function(e) {
+			e.preventDefault();
+			startX = e.originalEvent.changedTouches[0].pageX;
+			startY = e.originalEvent.changedTouches[0].pageY;
+		});
+		$("#key2").on("touchend", function(e) {
+			startX = e.originalEvent.changedTouches[0].pageX;
+			startY = e.originalEvent.changedTouches[0].pageY;
+			if(speed < -100){
+				alert("移除异物")
+			}
+		});
+		$("#key2").on("touchmove", function(e) {
+			var moveEndX = e.originalEvent.changedTouches[0].pageX;
+			var moveEndY = e.originalEvent.changedTouches[0].pageY;
+			speed -= 3;
+			console.log(speed)
+			if(startY > moveEndY){
+				$("#key2").css("transform","translate(-50%, "+speed+"%)")
+				startY = e.originalEvent.changedTouches[0].pageY;
+			}else{
+				console.log("向下滑动")
+			}
+			console.log();
+		});
+	</script>
+	<script>
+		
+	</script>
 </html>
